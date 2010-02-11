@@ -16,11 +16,10 @@ void end_R()
     R_gc();
 }
 
-double get_double(char * expression)
+SEXP process_expression(char * expression)
 {
     SEXP e, tmp, val;
     int hadError;
-    double result;
     ParseStatus status;
 
     PROTECT(tmp = mkString(expression));
@@ -29,11 +28,6 @@ double get_double(char * expression)
     UNPROTECT(2);
 
     if (!hadError)
-    {
-        PROTECT(val);
-        result = REAL(val)[0];
-        UNPROTECT(1);
-    }
-
-    return result;
+        return val;
+    return NULL;
 }

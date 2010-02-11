@@ -5,4 +5,4 @@
 
 void init_R();
 void end_R();
-double get_double(char * expression);
+SEXP process_expression(char * expression);
