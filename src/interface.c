@@ -9,20 +9,9 @@ static int double_val(void)
     YAP_Term in = YAP_ARG1;
     YAP_Term out = YAP_ARG2;
     char buffer[256];
-    double result;
 
     YAP_StringToBuffer(in, buffer, BUFSIZE);
-
-    SEXP val = process_expression(buffer);
-
-    if (val != NULL)
-    {
-        PROTECT(val);
-        result = REAL(val)[0];
-        UNPROTECT(1);
-    }
-
-    YAP_Term res = YAP_MkFloatTerm(result);
+    YAP_Term res = YAP_MkFloatTerm(get_double(buffer));
 
     return YAP_Unify(out, res);
 }
@@ -32,20 +21,9 @@ static int int_val(void)
     YAP_Term in = YAP_ARG1;
     YAP_Term out = YAP_ARG2;
     char buffer[256];
-    int result;
 
     YAP_StringToBuffer(in, buffer, BUFSIZE);
-
-    SEXP val = process_expression(buffer);
-
-    if (val != NULL) 
-    {
-        PROTECT(val);
-        result = INTEGER(val)[0];
-        UNPROTECT(1);
-    }
-
-    YAP_Term res = YAP_MkIntTerm(result);
+    YAP_Term res = YAP_MkIntTerm(get_int(buffer));
 
     return YAP_Unify(out, res);
 }

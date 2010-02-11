@@ -16,7 +16,7 @@ void end_R()
     R_gc();
 }
 
-SEXP process_expression(char * expression)
+static SEXP process_expression(char * expression)
 {
     SEXP e, tmp, val;
     int hadError;
@@ -30,4 +30,43 @@ SEXP process_expression(char * expression)
     if (!hadError)
         return val;
     return NULL;
+}
+
+double get_double(char * expression)
+{
+    double result;
+    SEXP val = process_expression(expression);
+
+    if (val != NULL)
+    {
+        PROTECT(val);
+        result = REAL(val)[0];
+        UNPROTECT(1);
+    }
+
+    return result;
+}
+
+int get_int(char * expression)
+{
+    int result;
+    SEXP val = process_expression(expression);
+
+    if (val != NULL)
+    {
+        if (isInteger(val))
+        {
+            PROTECT(val);
+            result = INTEGER(val)[0];
+            UNPROTECT(1);
+        }
+        else
+        {
+            PROTECT(val);
+            result = (int) REAL(val)[0];
+            UNPROTECT(1);
+        }
+    }
+
+    return result;
 }
