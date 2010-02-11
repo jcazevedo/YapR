@@ -3,7 +3,7 @@
 YapR is a YAP module to enable the access to R-project facilities in the Prolog 
 engine.
 
-Current version only tested in windows and only supports double values.
+Current version only tested in windows and only supports int and double values.
 
 ## Example Usage ##
 
