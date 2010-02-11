@@ -1,15 +1,10 @@
 #include <YapR.h>
 
-void init_R(int argc, char **argv)
+void init_R()
 {
-    int defaultArgc = 1;
-    char *defaultArgv[] = {"Rtest"};
+    int argc = 2;
+	char * argv[] = {"R", "--silent"};
 
-    if (argc == 0 || argv == NULL) 
-    {
-	    argc = defaultArgc;
-	    argv = defaultArgv;
-    }
     Rf_initEmbeddedR(argc, argv);
 }
 
@@ -28,8 +23,6 @@ double get_double(char * expression)
     double result;
     ParseStatus status;
 
-    init_R(0, NULL);
-
     PROTECT(tmp = mkString(expression));
     PROTECT(e = R_ParseVector(tmp, 1, &status, R_NilValue));
     val = R_tryEval(VECTOR_ELT(e, 0), R_GlobalEnv, &hadError);
@@ -42,6 +35,5 @@ double get_double(char * expression)
         UNPROTECT(1);
     }
 
-    end_R();
     return result;
 }

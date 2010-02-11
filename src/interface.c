@@ -15,7 +15,15 @@ static int double_val(void)
     return YAP_Unify(out, res);
 }
 
+static int init_r(void)
+{
+    init_R();
+
+    return 1;
+}
+
 void init_my_predicates()
 {
     YAP_UserCPredicate("double_val", double_val, 2);
+    YAP_UserCPredicate("init_r", init_r, 0);
 }

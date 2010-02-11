@@ -3,6 +3,6 @@
 #include <Rinternals.h>
 #include <R_ext/Parse.h>
 
-void init_R(int argc, char ** argv);
+void init_R();
 void end_R();
 double get_double(char * expression);
