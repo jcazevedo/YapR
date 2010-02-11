@@ -1,4 +1,4 @@
-### YapR ###
+## YapR ##
 
 YapR is a YAP module to enable the access to R-project facilities in the Prolog 
 engine.
