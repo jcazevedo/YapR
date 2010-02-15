@@ -70,3 +70,22 @@ int get_int(char * expression)
 
     return result;
 }
+
+list get_list(char * expression)
+{
+    list l;
+    l.size = 5;
+
+    strcpy(l.values[0].type, "int");
+    l.values[0].int_val = 1;
+    strcpy(l.values[1].type, "double");
+    l.values[1].double_val = 2.0;
+    strcpy(l.values[2].type, "int");
+    l.values[2].int_val = 3;
+    strcpy(l.values[3].type, "double");
+    l.values[3].double_val = 4.0;
+    strcpy(l.values[4].type, "int");
+    l.values[4].int_val = 5;
+
+    return l;
+}
