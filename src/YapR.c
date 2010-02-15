@@ -3,7 +3,7 @@
 void init_R()
 {
     int argc = 2;
-	char * argv[] = {"R", "--silent"};
+    char * argv[] = {"R", "--silent"};
 
     Rf_initEmbeddedR(argc, argv);
 }
