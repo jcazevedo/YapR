@@ -80,10 +80,20 @@ list get_list(char * expression)
 
     for (i = 0; i < l.size; i++)
     {
-        PROTECT(val);
-        strcpy(l.values[i].type, "double");
-        l.values[i].double_val = REAL(val)[i];
-        UNPROTECT(1);
+        if (isInteger(val))
+        {
+            PROTECT(val);
+            strcpy(l.values[i].type, "int");
+            l.values[i].int_val = INTEGER(val)[i];
+            UNPROTECT(1);
+        }
+        else if (isReal(val))
+        {
+            PROTECT(val);
+            strcpy(l.values[i].type, "double");
+            l.values[i].double_val = REAL(val)[i];
+            UNPROTECT(1);
+        }
     }
 
     return l;
