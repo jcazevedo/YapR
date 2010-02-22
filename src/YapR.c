@@ -36,7 +36,6 @@ double get_double(char * expression)
 {
     double result;
     SEXP val = process_expression(expression);
-    printf("%d\n", LENGTH(val));
 
     if (val != NULL)
     {

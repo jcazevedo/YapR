@@ -29,9 +29,13 @@ build_command(F, Args, R) :-
     conc(FC, AL, FF),
     conc(FF, [41], R).
 
+get_result([H], H) :- !.
+get_result(X, X).
+
 r_predicate(F, Args, R) :-
     build_command(F, Args, C),
-    float_val(C, R).
+    list_val(C, L),
+    get_result(L, R).
 
 :- load_foreign_files(['YapR'], [], init_my_predicates).
 :- init_r.
