@@ -4,6 +4,14 @@ conc([], L, L).
 conc([X|L1], L2, [X|L3]) :-
     conc(L1, L2, L3).
 
+flatten([], []).
+flatten(X, [X]) :- 
+    atomic(X).
+flatten([X|Y], Z) :- 
+    flatten(X, X1),
+    flatten(Y, Y1),
+    conc(X1, Y1, Z).
+
 build_args([], []) :- !.
 build_args([H|T], L) :-
     (atomic(H), !, 
@@ -17,10 +25,38 @@ build_args([H|T], L) :-
      L1 = I),
     conc(L1, R, L).
 
+get_dimargs(A, []) :-
+    atomic(A), !.
+get_dimargs([H|T], X) :-
+    get_dimargs(H, X1),
+    length([H|T], LH),
+    name(LH, NLH),
+    (X1 \== [], !,
+     conc(X1, [44], X2),
+     conc(X2, NLH, X)
+     ;
+     X = NLH).
+
 build_arglist(L, R) :-
+    flatten(L, L), !,
     build_args(L, SL),
-    conc([99,40], SL, R1),
-    conc(R1, [41], R).
+    name('c(', Prefix),
+    conc(Prefix, SL, R1),
+    name(')', Suffix),
+    conc(R1, Suffix, R).
+build_arglist(L, R) :-
+    flatten(L, LF),
+    build_args(LF, SL),
+    name('array(c(', Prefix),
+    conc(Prefix, SL, R1),
+    name(')', Suffix),
+    get_dimargs(L, Dims),
+    conc(R1, Suffix, R2),
+    name(',c(', DimPrefix),
+    conc(R2, DimPrefix, R3),
+    conc(R3, Dims, R4),
+    conc(R4, Suffix, R5),
+    conc(R5, Suffix, R).
 
 build_command(F, Args, R) :-
     name(F, FN),

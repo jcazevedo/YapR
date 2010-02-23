@@ -40,8 +40,8 @@ static YAP_Term build_list(list l, int current_pos)
 {
     if (l.nDims > 1)
     {
-        int cDims = l.dims[l.nDims - 1], i, j, k, inc = l.size / cDims;
         YAP_Term curr_term = YAP_MkAtomTerm(YAP_LookupAtom("[]"));
+        int cDims = l.dims[l.nDims - 1], i, j, k, inc = l.size / cDims;
 
         for (i = cDims; i > 0; i--)
         {
