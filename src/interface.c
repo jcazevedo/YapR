@@ -38,11 +38,36 @@ static YAP_Term get_term(list_cell cell)
 
 static YAP_Term build_list(list l, int current_pos)
 {
-    YAP_Term curr_term = get_term(l.values[current_pos]);
-    if (current_pos == l.size - 1)
+    if (l.nDims > 1)
+    {
+        int cDims = l.dims[l.nDims - 1], i, j, k, inc = l.size / cDims;
+        YAP_Term curr_term = YAP_MkAtomTerm(YAP_LookupAtom("[]"));
+
+        for (i = cDims; i > 0; i--)
+        {
+            list newL;
+            newL.nDims = l.nDims - 1;
+            newL.size = inc;
+            k = 0;
+
+            for (j = 0; j < l.nDims - 1; j++)
+                newL.dims[j] = l.dims[j];
+            for (j = (i - 1) * inc; j < i * inc; j++)
+                newL.values[k++] = l.values[j];
+
+            curr_term = YAP_MkPairTerm(build_list(newL, 0), curr_term);
+        }
+
         return curr_term;
+    }
     else
-        return YAP_MkPairTerm(curr_term, build_list(l, current_pos + 1));
+    {
+        YAP_Term curr_term = get_term(l.values[current_pos]);
+        if (current_pos == l.size - 1)
+            return curr_term;
+        else
+            return YAP_MkPairTerm(curr_term, build_list(l, current_pos + 1));
+    }
 }
 
 static int list_val(void)

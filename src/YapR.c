@@ -79,13 +79,20 @@ list get_list(char * expression)
     l.size = LENGTH(val);
 
     SEXP dims = getAttrib(val, R_DimSymbol);
-    l.nDims = LENGTH(dims);
-    
-    for (i = 0; i < l.nDims; i++)
+    if (dims == R_NilValue)
     {
-        PROTECT(dims);
-        l.dims[i] = INTEGER(dims)[i];
-        UNPROTECT(1);
+        l.nDims = 1;
+        l.dims[0] = l.size;
+    }
+    else
+    {
+        l.nDims = LENGTH(dims);
+        for (i = 0; i < l.nDims; i++)
+        {
+            PROTECT(dims);
+            l.dims[i] = INTEGER(dims)[i];
+            UNPROTECT(1);
+        }
     }
 
     for (i = 0; i < l.size; i++)
