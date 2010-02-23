@@ -16,6 +16,8 @@ typedef struct
 typedef struct
 {
     int         size;
+    int         nDims;
+    int         dims[BUFSIZE];
     list_cell   values[BUFSIZE];
 } list;
 

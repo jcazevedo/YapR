@@ -78,6 +78,16 @@ list get_list(char * expression)
     SEXP val = process_expression(expression);
     l.size = LENGTH(val);
 
+    SEXP dims = getAttrib(val, R_DimSymbol);
+    l.nDims = LENGTH(dims);
+    
+    for (i = 0; i < l.nDims; i++)
+    {
+        PROTECT(dims);
+        l.dims[i] = INTEGER(dims)[i];
+        UNPROTECT(1);
+    }
+
     for (i = 0; i < l.size; i++)
     {
         if (isInteger(val))

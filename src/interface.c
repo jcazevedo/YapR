@@ -3,8 +3,6 @@
 #include <YapR.h>
 #include <string.h>
 
-#define BUFSIZE 256
-
 static int float_val(void)
 {
     YAP_Term in = YAP_ARG1;
