@@ -3,7 +3,7 @@
 YapR is a YAP module to enable the access to R-project facilities in the Prolog 
 engine.
 
-Current version only tested in windows and only supports int and double values.
+Current version only tested in windows.
 
 ## Example Usage ##
 
@@ -14,12 +14,14 @@ Current version only tested in windows and only supports int and double values.
     ?- r_predicate(sort, [[2, 3, 1]], X).
     X = [1.0, 2.0|3.0] ?
     yes
-    ?- float_val("2 + 3.5", X).
-    X = 5.5 ?
+    ?- r_predicate('%*%', [[[1,2,3],[4,5,6],[7,8,9]],[[1,1],[1,1],[1,1]]], X).
+    X = [[6.0|6.0],[15.0|15.0],[24.0|24.0]] ?
     yes
-    ?- float_val("sqrt(16)", X).
+    ?- r_predicate(sqrt, [16], X).
     X = 4.0 ?
     yes
-    ?- int_val("{a = 2; b = 3; a + b}", X).
-    X = 5 ?
+    ?- r_predicate(t, [[[1,1],[1,1],[1,1]]], X).
+    X = [[1.0,1.0|1.0],[1.0,1.0|1.0]] ?
+    yes
+    ?- r_command('source("C:/sample.R")').
     yes
