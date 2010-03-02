@@ -49,8 +49,8 @@ get_dimargs([H|T], X) :-
     name(LH, NLH),
     (X1 \== [], !,
      name(',', Comma),
-     conc(X1, Comma, X2),
-     conc(X2, NLH, X)
+     conc(NLH, Comma, X2),
+     conc(X2, X1, X)
      ;
      X = NLH).
 
@@ -64,7 +64,7 @@ build_arglist(L, R) :-
 build_arglist(L, R) :-
     flatten(L, LF),
     build_args(LF, SL),
-    name('array(c(', Prefix),
+    name('matrix(c(', Prefix),
     conc(Prefix, SL, R1),
     name(')', Suffix),
     get_dimargs(L, Dims),
@@ -73,7 +73,8 @@ build_arglist(L, R) :-
     conc(R2, DimPrefix, R3),
     conc(R3, Dims, R4),
     conc(R4, Suffix, R5),
-    conc(R5, Suffix, R).
+    name(',byrow=T)', FinalSuffix),
+    conc(R5, FinalSuffix, R).
 
 build_command(F, Args, R) :-
     binary(F), !,
