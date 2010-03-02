@@ -79,42 +79,46 @@ int get_int(char * expression)
 list get_list(char * expression)
 {
     list l;
+    l.size = 0;
     int i;
     SEXP val = process_expression(expression);
-    l.size = LENGTH(val);
+    if (val != NULL)
+    {
+        l.size = LENGTH(val);
 
-    SEXP dims = getAttrib(val, R_DimSymbol);
-    if (dims == R_NilValue)
-    {
-        l.nDims = 1;
-        l.dims[0] = l.size;
-    }
-    else
-    {
-        l.nDims = LENGTH(dims);
-        for (i = 0; i < l.nDims; i++)
+        SEXP dims = getAttrib(val, R_DimSymbol);
+        if (dims == R_NilValue)
         {
-            PROTECT(dims);
-            l.dims[i] = INTEGER(dims)[i];
-            UNPROTECT(1);
+            l.nDims = 1;
+            l.dims[0] = l.size;
         }
-    }
+        else
+        {
+            l.nDims = LENGTH(dims);
+            for (i = 0; i < l.nDims; i++)
+            {
+                PROTECT(dims);
+                l.dims[i] = INTEGER(dims)[i];
+                UNPROTECT(1);
+            }
+        }
 
-    for (i = 0; i < l.size; i++)
-    {
-        if (isInteger(val))
+        for (i = 0; i < l.size; i++)
         {
-            PROTECT(val);
-            strcpy(l.values[i].type, "int");
-            l.values[i].int_val = INTEGER(val)[i];
-            UNPROTECT(1);
-        }
-        else if (isReal(val))
-        {
-            PROTECT(val);
-            strcpy(l.values[i].type, "double");
-            l.values[i].double_val = REAL(val)[i];
-            UNPROTECT(1);
+            if (isInteger(val))
+            {
+                PROTECT(val);
+                strcpy(l.values[i].type, "int");
+                l.values[i].int_val = INTEGER(val)[i];
+                UNPROTECT(1);
+            }
+            else if (isReal(val))
+            {
+                PROTECT(val);
+                strcpy(l.values[i].type, "double");
+                l.values[i].double_val = REAL(val)[i];
+                UNPROTECT(1);
+            }
         }
     }
 

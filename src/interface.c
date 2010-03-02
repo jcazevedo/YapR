@@ -38,36 +38,42 @@ static YAP_Term get_term(list_cell cell)
 
 static YAP_Term build_list(list l, int current_pos)
 {
-    if (l.nDims > 1)
+    if (l.size > 0)
     {
-        YAP_Term curr_term = YAP_MkAtomTerm(YAP_LookupAtom("[]"));
-        int cDims = l.dims[0], i, j, k, inc = cDims;
-
-        for (i = cDims - 1; i >= 0; i--)
+        if (l.nDims > 1)
         {
-            list newL;
-            newL.nDims = l.nDims - 1;
-            newL.size = l.size / cDims;
-            k = 0;
+            YAP_Term curr_term = YAP_MkAtomTerm(YAP_LookupAtom("[]"));
+            int cDims = l.dims[0], i, j, k, inc = cDims;
 
-            for (j = 1; j < l.nDims; j++)
-                newL.dims[j - 1] = l.dims[j];
-            for (j = i; j < l.size; j += inc)
-                newL.values[k++] = l.values[j];
+            for (i = cDims - 1; i >= 0; i--)
+            {
+                list newL;
+                newL.nDims = l.nDims - 1;
+                newL.size = l.size / cDims;
+                k = 0;
 
-            curr_term = YAP_MkPairTerm(build_list(newL, 0), curr_term);
-        }
+                for (j = 1; j < l.nDims; j++)
+                    newL.dims[j - 1] = l.dims[j];
+                for (j = i; j < l.size; j += inc)
+                    newL.values[k++] = l.values[j];
 
-        return curr_term;
-    }
-    else
-    {
-        YAP_Term curr_term = get_term(l.values[current_pos]);
-        if (current_pos == l.size - 1)
+                curr_term = YAP_MkPairTerm(build_list(newL, 0), curr_term);
+            }
+
             return curr_term;
+        }
         else
-            return YAP_MkPairTerm(curr_term, build_list(l, current_pos + 1));
+        {
+            YAP_Term curr_term = get_term(l.values[current_pos]);
+            if (current_pos == l.size - 1)
+                return curr_term;
+            else
+                return YAP_MkPairTerm(curr_term, 
+                                      build_list(l, current_pos + 1));
+        }
     }
+
+    return YAP_MkAtomTerm(YAP_LookupAtom("[]"));
 }
 
 static int list_val(void)
