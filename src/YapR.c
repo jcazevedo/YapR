@@ -32,6 +32,11 @@ static SEXP process_expression(char * expression)
     return NULL;
 }
 
+void send_command(char * expression)
+{
+    process_expression(expression);
+}
+
 double get_double(char * expression)
 {
     double result;

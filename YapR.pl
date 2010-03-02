@@ -1,4 +1,5 @@
-module(YapR, init_r/0, float_val/2, int_val/2, list_val/2, r_predicate/3).
+module(YapR, init_r/0, float_val/2, int_val/2, list_val/2, r_predicate/3, 
+             r_command/1).
 
 binary('-').
 binary('+').
@@ -99,6 +100,10 @@ r_predicate(F, Args, R) :-
     build_command(F, Args, C),
     list_val(C, L),
     get_result(L, R).
+
+r_command(C) :-
+    name(C, CL),
+    send_r_command(CL).
 
 :- load_foreign_files(['YapR'], [], init_my_predicates).
 :- init_r.

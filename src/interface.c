@@ -82,6 +82,17 @@ static int list_val(void)
     return YAP_Unify(out, res);
 }
 
+static int send_r_command(void)
+{
+    YAP_Term in = YAP_ARG1;
+    char buffer[256];
+
+    YAP_StringToBuffer(in, buffer, BUFSIZE);
+    send_command(buffer);
+
+    return 1;
+}
+
 static int init_r(void)
 {
     init_R();
@@ -95,4 +106,5 @@ void init_my_predicates()
     YAP_UserCPredicate("int_val", int_val, 2);
     YAP_UserCPredicate("list_val", list_val, 2);
     YAP_UserCPredicate("init_r", init_r, 0);
+    YAP_UserCPredicate("send_r_command", send_r_command, 1);
 }

@@ -26,3 +26,4 @@ void    end_R();
 double  get_double(char * expression);
 int     get_int(char * expression);
 list    get_list(char * expression);
+void    send_command(char * expression);
