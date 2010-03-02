@@ -1,5 +1,19 @@
 module(YapR, init_r/0, float_val/2, int_val/2, list_val/2, r_predicate/3).
 
+binary('-').
+binary('+').
+binary('/').
+binary('*').
+binary('^').
+binary('%x%').
+binary('%%').
+binary('%/%').
+binary('%*%').
+binary('%o%').
+binary('%x%').
+binary('%in%').
+binary('$').
+
 conc([], L, L).
 conc([X|L1], L2, [X|L3]) :-
     conc(L1, L2, L3).
@@ -60,6 +74,15 @@ build_arglist(L, R) :-
     conc(R4, Suffix, R5),
     conc(R5, Suffix, R).
 
+build_command(F, Args, R) :-
+    binary(F), !,
+    name(F, FN),
+    length(Args, 2),
+    [O1, O2] = Args,
+    build_args([O1], A1),
+    build_args([O2], A2),
+    conc(A1, FN, R1),
+    conc(R1, A2, R).
 build_command(F, Args, R) :-
     name(F, FN),
     name('(', Prefix),
