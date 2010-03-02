@@ -20,7 +20,8 @@ build_args([H|T], L) :-
      build_arglist(H, I)),
     build_args(T, R),
     (T \== [], !,
-     conc(I, [44], L1)
+     name(',', Comma),
+     conc(I, Comma, L1)
      ;
      L1 = I),
     conc(L1, R, L).
@@ -32,7 +33,8 @@ get_dimargs([H|T], X) :-
     length([H|T], LH),
     name(LH, NLH),
     (X1 \== [], !,
-     conc(X1, [44], X2),
+     name(',', Comma),
+     conc(X1, Comma, X2),
      conc(X2, NLH, X)
      ;
      X = NLH).
@@ -60,10 +62,12 @@ build_arglist(L, R) :-
 
 build_command(F, Args, R) :-
     name(F, FN),
-    conc(FN, [40], FC),
+    name('(', Prefix),
+    conc(FN, Prefix, FC),
     build_args(Args, AL),
     conc(FC, AL, FF),
-    conc(FF, [41], R).
+    name(')', Suffix),
+    conc(FF, Suffix, R).
 
 get_result([H], H) :- !.
 get_result(X, X).
