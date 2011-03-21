@@ -1,5 +1,5 @@
-#include <YAP/YAPInterface.h>
-#include <YAP/c_interface.h>
+#include <Yap/YapInterface.h>
+#include <Yap/c_interface.h>
 #include <YapR.h>
 #include <string.h>
 
@@ -66,7 +66,8 @@ static YAP_Term build_list(list l, int current_pos)
         {
             YAP_Term curr_term = get_term(l.values[current_pos]);
             if (current_pos == l.size - 1)
-                return curr_term;
+                return YAP_MkPairTerm(curr_term, 
+                                      YAP_MkAtomTerm(YAP_LookupAtom("[]")));
             else
                 return YAP_MkPairTerm(curr_term, 
                                       build_list(l, current_pos + 1));
